@@ -223,6 +223,11 @@ namespace lhtzbj12.Encryption
         }
         static AsymmetricCipherKeyPair ReadPem(string pem)
         {
+            // 判断字符串是否是标准pem
+            if (!pem.StartsWith("-----BEGIN") && !pem.EndsWith("KEY-----"))
+            {
+                pem = PrivateKeyFormat(pem);
+            }
             using (TextReader reader = new StringReader(pem))
             {
                 var obj = new Org.BouncyCastle.OpenSsl.PemReader(reader).ReadObject();
